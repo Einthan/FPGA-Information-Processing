@@ -1,0 +1,38 @@
+`timescale 1ns / 1ps
+
+module systolicarray_2(
+clk,
+rst,
+mi0,
+mi1,
+mo
+    );
+
+parameter size=8;
+parameter decimal=4;
+
+input clk,rst;
+
+
+input[4*size-1:0] mi0;
+input[4*size-1:0] mi1;
+output[4*size-1:0] mo;
+
+
+
+always@(posedge clk or negedge rst)begin
+    if(~rst)begin
+    // Start of your code.
+
+
+    // End of your code.
+    end
+    else begin
+    // Start of your code.
+
+
+    // End of your code.
+    end
+end
+
+endmodule

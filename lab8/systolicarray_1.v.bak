@@ -1,0 +1,87 @@
+`timescale 1ns / 1ps
+
+module systolicarray_1(
+clk,
+rst,
+mi0,
+mi1,
+mor
+    );
+
+parameter size=8;
+parameter decimal=4;
+
+input clk,rst;
+input[4*size-1:0] mi0;
+input[4*size-1:0] mi1;
+output reg[4*size-1:0] mor;
+
+wire[4*size-1:0] mo;
+
+always@(posedge clk or negedge rst)begin
+    if(~rst)begin
+        mor<=0;
+    end
+    else begin
+        mor<=mo;
+     
+    end
+end
+
+wire[size-1:0] umi1[7:0];
+wire[size-1:0] umi2[7:0];
+wire[size-1:0] uai[7:0];
+wire[size-1:0] uoutmi1[7:0];
+wire[size-1:0] uoutmi2[7:0];
+wire[size-1:0] uout[7:0];
+
+genvar gi;
+
+
+
+generate
+    for(gi=0;gi<8;gi=gi+1)begin : genu
+        systolicarray_1_unit #(.size(size),.decimal(decimal)) ui(umi1[gi],umi2[gi],uai[gi],uoutmi1[gi],uoutmi2[gi],uout[gi]);
+    end
+endgenerate
+
+// Start of your code.
+assign umi1[0]=mi0[7:0];
+assign umi1[1]=mi0[15:8];
+assign umi1[2]=mi0[23:16];
+assign umi1[3]=mi0[31:24];
+
+assign umi2[0]=mi1[7:0];
+assign umi2[1]=mi1[15:8];
+assign umi2[2]=mi1[23:16];
+assign umi2[3]=mi1[31:24];
+
+assign mo[7:0]=uout[0];
+assign mo[15:8]=uout[1];
+assign mo[23:16]=uout[3];
+assign mo[31:24]=uout[4];
+
+assign uai[0]=mo[7:0];
+assign uai[1]=mo[15:8];
+assign uai[2]=mo[23:16];
+assign uai[3]=mo[31:24];
+/*
+always@(posedge clk or negedge rst)begin
+    if(rst)begin
+    #20
+    mo[7:0]<=uout[0];
+     mo[15:8]<=uout[1];
+     mo[23:16]<=uout[3];
+     mo[31:24]<=uout[4];
+
+     uai[0]<=mo[7:0];
+     uai[1]<=mo[15:8];
+     uai[2]<=mo[23:16];
+     uai[3]<=mo[31:24];
+     end
+   end
+   */
+// End of your code.
+
+
+endmodule
